@@ -1,4 +1,6 @@
 import sys
+import math
+
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import (
     QWidget, 
@@ -7,9 +9,11 @@ from PyQt5.QtWidgets import (
     QToolBar,
     QGridLayout,
     QPushButton,
+    QLabel,
+    QVBoxLayout,
 )
 
-
+from timer_panel import TimerPanel
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -27,7 +31,7 @@ class MainWindow(QWidget):
         '''Add elements to the window to the correct place'''
         self.layout = QGridLayout()
         self.setLayout(self.layout)
-        self.layout.addWidget(QPushButton('1'),0,0) # This is just a test
+        self.layout.addWidget(TimerPanel("Relax Eyes", 190),0,0) # This is just a test
 
     def center(self):
         '''Center the window'''
@@ -35,7 +39,6 @@ class MainWindow(QWidget):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
