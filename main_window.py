@@ -6,11 +6,7 @@ from PyQt5.QtWidgets import (
     QWidget, 
     QDesktopWidget, 
     QApplication, 
-    QToolBar,
     QGridLayout,
-    QPushButton,
-    QLabel,
-    QVBoxLayout,
 )
 
 from timer_panel import TimerPanel
