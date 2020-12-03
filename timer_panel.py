@@ -1,6 +1,7 @@
 import math
 
 from PyQt5 import QtCore
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -23,13 +24,15 @@ class TimerPanel(QWidget):
         self.layout.addWidget(self.time_label)
 
     def get_title_label(self, title:str) -> QLabel:
-        label = QLabel(f"<h1>{title}</h1>")
+        label = QLabel(f"{title}")
+        label.setFont(QFont('Segoe UI', 18))
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
     def get_time_label(self, seconds:int) -> QLabel:
         mins, secs = self.calculate_time()
-        label = QLabel(f"<h2>{str(mins)}:{str(secs)}</h2>")
+        label = QLabel(f"{str(mins).zfill(2)}:{str(secs).zfill(2)}")
+        label.setFont(QFont('Segoe UI', 15))
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
