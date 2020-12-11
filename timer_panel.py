@@ -35,8 +35,7 @@ class TimerPanel(QWidget):
         return label
 
     def get_time_label(self) -> QLabel:
-        mins, secs = self.calculate_time()
-        label = QLabel(f"{str(mins).zfill(2)}:{str(secs).zfill(2)}")
+        label = QLabel(self.format_time())
         label.setFont(QFont('Segoe UI', 15))
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
@@ -47,12 +46,12 @@ class TimerPanel(QWidget):
         minutes_seconds.append(self.seconds % 60)
         return minutes_seconds
 
+    def format_time(self) -> str:
+        mins, secs = self.calculate_time()
+        return f"{str(mins).zfill(2)}:{str(secs).zfill(2)}"
+
     def countdown(self):
         while(True):
             self.seconds -= 1
-            self.time_label = self.get_time_label()
-            self.layout.addWidget(self.time_label)
-            # TODO: repaint UI
-            self.time_label.repaint()
-            self.time_label.update()
+            self.time_label.setText(self.format_time())
             time.sleep(1)
