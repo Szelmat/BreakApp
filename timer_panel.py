@@ -10,8 +10,9 @@ from PyQt5.QtWidgets import (
     QLabel,
 )
 
+
 class TimerPanel(QWidget):
-    def __init__(self, name:str, seconds:int):
+    def __init__(self, name: str, seconds: int):
         super().__init__()
         self.name = name
         self.seconds = seconds
@@ -27,7 +28,7 @@ class TimerPanel(QWidget):
         self.layout.addWidget(self.title_label)
         self.layout.addWidget(self.time_label)
 
-    def get_title_label(self, title:str) -> QLabel:
+    def get_title_label(self, title: str) -> QLabel:
         label = QLabel(f"{title}")
         label.setFont(QFont('Segoe UI', 18))
         label.setAlignment(QtCore.Qt.AlignCenter)
@@ -50,7 +51,8 @@ class TimerPanel(QWidget):
         while(True):
             self.seconds -= 1
             self.time_label = self.get_time_label()
+            self.layout.addWidget(self.time_label)
             # TODO: repaint UI
-            print(self.seconds)
+            self.time_label.repaint()
+            self.time_label.update()
             time.sleep(1)
-            print()
