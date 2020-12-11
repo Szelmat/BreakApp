@@ -1,4 +1,6 @@
 import math
+import time
+import threading
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import QFont
@@ -14,10 +16,12 @@ class TimerPanel(QWidget):
         self.name = name
         self.seconds = seconds
         self.build_widget()
+        x = threading.Thread(target=self.countdown, daemon=True)
+        x.start()
 
     def build_widget(self):
         self.title_label = self.get_title_label(self.name)
-        self.time_label = self.get_time_label(self.seconds)
+        self.time_label = self.get_time_label()
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.addWidget(self.title_label)
@@ -29,7 +33,7 @@ class TimerPanel(QWidget):
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
-    def get_time_label(self, seconds:int) -> QLabel:
+    def get_time_label(self) -> QLabel:
         mins, secs = self.calculate_time()
         label = QLabel(f"{str(mins).zfill(2)}:{str(secs).zfill(2)}")
         label.setFont(QFont('Segoe UI', 15))
@@ -41,3 +45,12 @@ class TimerPanel(QWidget):
         minutes_seconds.append(math.floor(self.seconds / 60))
         minutes_seconds.append(self.seconds % 60)
         return minutes_seconds
+
+    def countdown(self):
+        while(True):
+            self.seconds -= 1
+            self.time_label = self.get_time_label()
+            # TODO: repaint UI
+            print(self.seconds)
+            time.sleep(1)
+            print()
