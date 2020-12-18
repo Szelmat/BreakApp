@@ -17,12 +17,16 @@ class TimerPanel(QWidget):
         self.name = name
         self.seconds = seconds
         self.build_widget()
-        x = threading.Thread(target=self.countdown, daemon=True)
-        x.start()
+        self.countdown_thread = threading.Thread(
+            target=self.countdown,
+            daemon=True
+        )
+        self.countdown_thread.start()
 
     def build_widget(self):
         self.title_label = self.get_title_label(self.name)
         self.time_label = self.get_time_label()
+        self.setStyleSheet("border: 1px solid black;")
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.addWidget(self.title_label)
@@ -40,18 +44,33 @@ class TimerPanel(QWidget):
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
-    def calculate_time(self):
-        minutes_seconds = []
-        minutes_seconds.append(math.floor(self.seconds / 60))
-        minutes_seconds.append(self.seconds % 60)
-        return minutes_seconds
-
     def format_time(self) -> str:
-        mins, secs = self.calculate_time()
-        return f"{str(mins).zfill(2)}:{str(secs).zfill(2)}"
+        hours, mins, secs = self.calculate_time()
+        if hours > 0:
+            return (
+                f"{str(hours).zfill(2)}:{str(mins).zfill(2)}:"
+                f"{str(secs).zfill(2)}"
+            )
+        else:
+            return f"{str(mins).zfill(2)}:{str(secs).zfill(2)}"
+
+    def calculate_time(self):
+        hours_minutes_seconds = []
+        hours = math.floor(self.seconds / 3600)
+        hours_minutes_seconds.append(hours)
+        hours_minutes_seconds.append(
+            math.floor(self.seconds / 60) - hours * 60
+        )
+        hours_minutes_seconds.append(self.seconds % 60)
+        return hours_minutes_seconds
 
     def countdown(self):
+        self.finished = False
         while(True):
             self.seconds -= 1
             self.time_label.setText(self.format_time())
             time.sleep(1)
+            if self.seconds <= 0:
+                self.finished = True
+                # TODO: Add logic
+                return
