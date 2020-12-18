@@ -1,7 +1,5 @@
 import sys
-import math
 
-from PyQt5 import QtCore
 from PyQt5.QtWidgets import (
     QWidget,
     QDesktopWidget,
@@ -16,6 +14,7 @@ from info_panel import InfoPanel
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
+        self.center_panel = InfoPanel()
         self.init_ui()
 
     def init_ui(self):
@@ -32,10 +31,11 @@ class MainWindow(QWidget):
         self.layout.addWidget(TimerPanel("Relax Eyes", 900), 0, 0, 1, 3)
         self.layout.addWidget(TimerPanel("Rest Hands", 2400), 1, 0)
 
-        self.layout.addWidget(InfoPanel(), 1, 1)
+        self.layout.addWidget(self.center_panel, 1, 1)
 
         self.layout.addWidget(TimerPanel("Stand up", 3600), 1, 2)
         self.layout.addWidget(TimerPanel("Stretch", 7200), 2, 0, 1, 3)
+        self.center_panel.change_info("Test", "Test")
 
     def center(self):
         '''Center the window'''

@@ -33,13 +33,13 @@ class TimerPanel(QWidget):
 
     def get_title_label(self, title: str) -> QLabel:
         label = QLabel(f"{title}")
-        label.setFont(QFont('Segoe UI', 18))
+        label.setFont(QFont('Segoe UI', 15))
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
     def get_time_label(self) -> QLabel:
         label = QLabel(self.format_time())
-        label.setFont(QFont('Segoe UI', 15))
+        label.setFont(QFont('Segoe UI', 12))
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
