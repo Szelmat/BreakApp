@@ -26,7 +26,6 @@ class TimerPanel(QWidget):
     def build_widget(self):
         self.title_label = self.get_title_label(self.name)
         self.time_label = self.get_time_label()
-        self.setStyleSheet("border: 1px solid black;")
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.addWidget(self.title_label)
@@ -54,7 +53,7 @@ class TimerPanel(QWidget):
         else:
             return f"{str(mins).zfill(2)}:{str(secs).zfill(2)}"
 
-    def calculate_time(self):
+    def calculate_time(self) -> list:
         hours_minutes_seconds = []
         hours = math.floor(self.seconds / 3600)
         hours_minutes_seconds.append(hours)

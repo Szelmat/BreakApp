@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (
 )
 
 from timer_panel import TimerPanel
+from info_panel import InfoPanel
 
 
 class MainWindow(QWidget):
@@ -30,6 +31,9 @@ class MainWindow(QWidget):
         self.setLayout(self.layout)
         self.layout.addWidget(TimerPanel("Relax Eyes", 900), 0, 0, 1, 3)
         self.layout.addWidget(TimerPanel("Rest Hands", 2400), 1, 0)
+
+        self.layout.addWidget(InfoPanel(), 1, 1)
+
         self.layout.addWidget(TimerPanel("Stand up", 3600), 1, 2)
         self.layout.addWidget(TimerPanel("Stretch", 7200), 2, 0, 1, 3)
 
