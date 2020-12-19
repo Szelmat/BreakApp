@@ -1,4 +1,5 @@
 import time
+import threading
 from playsound import playsound
 
 from PyQt5.QtWidgets import (
@@ -40,19 +41,19 @@ class InfoPanel(QWidget):
         self.title_label.setText(title)
         if time > 0:
             self.timer_label.setText(time)
-        # self.cycle_thread = threading.Thread(target=self.cycle, daemon=True)
-        # self.cycle_thread.start()
-        # self.cycle_thread.join()
+        self.cycle_thread = threading.Thread(target=self.cycle, daemon=True)
+        self.cycle_thread.start()
+        self.cycle_thread.join()
         self.title_label.setText("")
 
     def cycle(self):
         seconds = 0.0
         step = 0.1
         while(True):
-            time.sleep(step)
+            time.sleep(0.1)
             seconds += step
             self.update_progressbar(seconds)
-            if(seconds >= 5):
+            if(seconds >= 10.0):
                 return
 
     def update_progressbar(self, seconds: int):

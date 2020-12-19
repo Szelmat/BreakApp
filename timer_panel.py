@@ -17,7 +17,7 @@ class TimerPanel(QWidget):
     def __init__(self, name: str, seconds: int, middle_panel: InfoPanel):
         super().__init__()
         self.name = name
-        self.seconds = seconds
+        self.seconds_original = self.seconds = seconds
         self.build_widget()
         self.countdown_thread = threading.Thread(
             target=self.countdown,
@@ -74,6 +74,5 @@ class TimerPanel(QWidget):
             time.sleep(1)
             if self.seconds <= 0:
                 self.finished = True
-                # TODO: Add logic
                 self.middle_panel.alarm(self.name)
-                return
+                self.seconds = self.seconds_original
