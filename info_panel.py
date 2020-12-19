@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
 )
 from PyQt5 import QtCore
+from PyQt5.QtCore import QThread
 from PyQt5.QtGui import QFont
 
 
@@ -41,22 +42,36 @@ class InfoPanel(QWidget):
         self.title_label.setText(title)
         if time > 0:
             self.timer_label.setText(time)
-        self.cycle_thread = threading.Thread(target=self.cycle, daemon=True)
-        self.cycle_thread.start()
-        self.cycle_thread.join()
+
+        self.thread = Thread()
+        self.thread._signal.connect(self.signal_accept)
+        self.thread.start()
+
         self.title_label.setText("")
 
-    def cycle(self):
+    def signal_accept(self, msg):
+        self.progressbar.setValue(int(msg))
+        if self.progressbar.value() == 99:
+            self.progressbar.setValue(0)
+
+
+class Thread(QThread):
+    _signal = QtCore.pyqtSignal(int)
+
+    def __init__(self):
+        super(Thread, self).__init__()
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
         seconds = 0.0
         step = 0.1
         while(True):
             time.sleep(0.1)
             seconds += step
-            self.update_progressbar(seconds)
+            self._signal.emit(
+                (seconds / 4.0) * 100
+            )
             if(seconds >= 10.0):
                 return
-
-    def update_progressbar(self, seconds: int):
-        self.progressbar.setValue(
-            (seconds / 4.0) * 100
-        )
