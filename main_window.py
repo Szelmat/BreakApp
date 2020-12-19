@@ -16,6 +16,8 @@ class MainWindow(QWidget):
         super().__init__()
         self.center_panel = InfoPanel()
         self.init_ui()
+        self.middle_panel = InfoPanel()
+        self.middle_panel.alarm("Test")
 
     def init_ui(self):
         self.resize(1200, 700)
@@ -35,7 +37,6 @@ class MainWindow(QWidget):
 
         self.layout.addWidget(TimerPanel("Stand up", 3600), 1, 2)
         self.layout.addWidget(TimerPanel("Stretch", 7200), 2, 0, 1, 3)
-        self.center_panel.change_info("Test", "Test")
 
     def center(self):
         '''Center the window'''

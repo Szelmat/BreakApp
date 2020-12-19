@@ -1,6 +1,8 @@
 import time
 import threading
 
+from playsound import playsound
+
 from PyQt5.QtWidgets import (
     QWidget,
     QLabel,
@@ -15,10 +17,10 @@ class InfoPanel(QWidget):
     def __init__(self):
         super().__init__()
         self.title_label = QLabel("")
-        self.title_label.setFont(QFont('Segoe UI', 15))
+        self.title_label.setFont(QFont('Segoe UI', 13))
         self.title_label.setAlignment(QtCore.Qt.AlignCenter)
         self.timer_label = QLabel("")
-        self.timer_label.setFont(QFont('Segoe UI', 12))
+        self.timer_label.setFont(QFont('Segoe UI', 11))
         self.timer_label.setAlignment(QtCore.Qt.AlignCenter)
 
         self.progressbar = QProgressBar()
@@ -34,9 +36,9 @@ class InfoPanel(QWidget):
     def change_info(self, title: str, time: str):
         self.title_label.setText(title)
         self.timer_label.setText(time)
-        self.cycle_thread = threading.Thread(target=self.cycle)
-        self.cycle_thread.start()
-        self.cycle_thread.join()
+        # self.cycle_thread = threading.Thread(target=self.cycle, daemon=True)
+        # self.cycle_thread.start()
+        # self.cycle_thread.join()
 
     def cycle(self):
         seconds = 0.0
@@ -50,3 +52,9 @@ class InfoPanel(QWidget):
 
     def update_progressbar(self, seconds: int):
         self.progressbar.setValue((seconds / 4.0) * 100)
+
+    def alarm(self, desc: str) -> bool:
+        self.title_label.setText(desc)
+        playsound("res/alarm.wav")
+        time.sleep(5)
+        self.title_label.setText("")
