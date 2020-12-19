@@ -1,4 +1,5 @@
 import sys
+import threading
 
 from PyQt5.QtWidgets import (
     QWidget,
@@ -14,15 +15,13 @@ from info_panel import InfoPanel
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.center_panel = InfoPanel()
-        self.init_ui()
         self.middle_panel = InfoPanel()
-        self.middle_panel.alarm("Test")
+        self.init_ui()
 
     def init_ui(self):
         self.resize(1200, 700)
         self.build_layout()
-        self.center()
+        # self.center()
         self.setWindowTitle('BreakApp')
         self.show()
 
@@ -30,13 +29,17 @@ class MainWindow(QWidget):
         '''Add elements to the window to the correct place'''
         self.layout = QGridLayout()
         self.setLayout(self.layout)
-        self.layout.addWidget(TimerPanel("Relax Eyes", 900), 0, 0, 1, 3)
-        self.layout.addWidget(TimerPanel("Rest Hands", 2400), 1, 0)
+        self.layout.addWidget(
+            TimerPanel("Relax Eyes", 900, self.middle_panel), 0, 0, 1, 3)
+        self.layout.addWidget(
+            TimerPanel("Rest Hands", 2400, self.middle_panel), 1, 0)
 
-        self.layout.addWidget(self.center_panel, 1, 1)
+        self.layout.addWidget(self.middle_panel, 1, 1)
 
-        self.layout.addWidget(TimerPanel("Stand up", 3600), 1, 2)
-        self.layout.addWidget(TimerPanel("Stretch", 7200), 2, 0, 1, 3)
+        self.layout.addWidget(
+            TimerPanel("Stand up", 3600, self.middle_panel), 1, 2)
+        self.layout.addWidget(
+            TimerPanel("Stretch", 7200, self.middle_panel), 2, 0, 1, 3)
 
     def center(self):
         '''Center the window'''

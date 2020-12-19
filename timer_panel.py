@@ -10,9 +10,11 @@ from PyQt5.QtWidgets import (
     QLabel,
 )
 
+from info_panel import InfoPanel
+
 
 class TimerPanel(QWidget):
-    def __init__(self, name: str, seconds: int):
+    def __init__(self, name: str, seconds: int, middle_panel: InfoPanel):
         super().__init__()
         self.name = name
         self.seconds = seconds
@@ -22,6 +24,7 @@ class TimerPanel(QWidget):
             daemon=True
         )
         self.countdown_thread.start()
+        self.middle_panel = middle_panel
 
     def build_widget(self):
         self.title_label = self.get_title_label(self.name)
@@ -72,4 +75,5 @@ class TimerPanel(QWidget):
             if self.seconds <= 0:
                 self.finished = True
                 # TODO: Add logic
+                self.middle_panel.alarm(self.name)
                 return
