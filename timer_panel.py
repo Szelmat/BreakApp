@@ -27,6 +27,7 @@ class TimerPanel(QWidget):
         self.middle_panel = middle_panel
 
     def build_widget(self):
+        '''Lay out the visual elements of the widget'''
         self.title_label = self.get_title_label(self.name)
         self.time_label = self.get_time_label()
         self.layout = QVBoxLayout()
@@ -35,18 +36,21 @@ class TimerPanel(QWidget):
         self.layout.addWidget(self.time_label)
 
     def get_title_label(self, title: str) -> QLabel:
+        '''Construct the title label'''
         label = QLabel(f"{title}")
         label.setFont(QFont('Segoe UI', 13))
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
     def get_time_label(self) -> QLabel:
+        '''Construct the time label'''
         label = QLabel(self.format_time())
         label.setFont(QFont('Segoe UI', 11))
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
     def format_time(self) -> str:
+        '''Make the time more readable'''
         hours, mins, secs = self.calculate_time()
         if hours > 0:
             return (
@@ -57,6 +61,7 @@ class TimerPanel(QWidget):
             return f"{str(mins).zfill(2)}:{str(secs).zfill(2)}"
 
     def calculate_time(self) -> list:
+        '''Calculate the hours, minutes, seconds remaining'''
         hours_minutes_seconds = []
         hours = math.floor(self.seconds / 3600)
         hours_minutes_seconds.append(hours)
@@ -67,6 +72,7 @@ class TimerPanel(QWidget):
         return hours_minutes_seconds
 
     def countdown(self):
+        '''Construct and start the countdown loop'''
         self.finished = False
         while(True):
             self.seconds -= 1

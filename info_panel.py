@@ -33,18 +33,20 @@ class InfoPanel(QWidget):
         self.layout.addWidget(self.progressbar)
 
     def alarm(self, desc: str) -> bool:
+        '''Play the alarm sound and display the prompt'''
         self.title_label.setText(desc)
         playsound("res/alarm.wav")
         self.change_info(desc)
 
     def change_info(self, title: str):
+        '''Show the current action on the middle panel'''
         self.title_label.setText(title)
-
         self.thread = Thread()
         self.thread._signal.connect(self.signal_accept)
         self.thread.start()
 
     def signal_accept(self, msg):
+        '''Get the current value of the progressbar and display it'''
         self.progressbar.setValue(int(msg))
         if self.progressbar.value() == 99:
             self.progressbar.setValue(0)
@@ -61,6 +63,7 @@ class Thread(QThread):
         self.wait()
 
     def run(self):
+        '''Wait and send the current progress of the timeout'''
         seconds = 0.0
         STEP = 0.2
         while(True):
