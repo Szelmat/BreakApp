@@ -1,5 +1,4 @@
 import time
-import threading
 from playsound import playsound
 
 from PyQt5.QtWidgets import (
@@ -38,21 +37,20 @@ class InfoPanel(QWidget):
         playsound("res/alarm.wav")
         self.change_info(desc)
 
-    def change_info(self, title: str, time: str = 0):
+    def change_info(self, title: str, time: str = ""):
         self.title_label.setText(title)
-        if time > 0:
+        if time != "":
             self.timer_label.setText(time)
 
         self.thread = Thread()
         self.thread._signal.connect(self.signal_accept)
         self.thread.start()
 
-        self.title_label.setText("")
-
     def signal_accept(self, msg):
         self.progressbar.setValue(int(msg))
         if self.progressbar.value() == 99:
             self.progressbar.setValue(0)
+            self.title_label.setText("")
 
 
 class Thread(QThread):
@@ -66,12 +64,12 @@ class Thread(QThread):
 
     def run(self):
         seconds = 0.0
-        step = 0.1
+        STEP = 0.2
         while(True):
-            time.sleep(0.1)
-            seconds += step
-            self._signal.emit(
-                (seconds / 4.0) * 100
-            )
-            if(seconds >= 10.0):
+            val = (seconds / 4.0) * 100
+            self._signal.emit(val)
+            if(val >= 99):
+                self._signal.emit(99)
                 return
+            time.sleep(0.1)
+            seconds += STEP

@@ -73,6 +73,9 @@ class TimerPanel(QWidget):
             self.time_label.setText(self.format_time())
             time.sleep(1)
             if self.seconds <= 0:
+                sem = threading.Semaphore()
+                sem.acquire()
                 self.finished = True
                 self.middle_panel.alarm(self.name)
                 self.seconds = self.seconds_original
+                sem.release()
