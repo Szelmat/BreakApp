@@ -73,6 +73,7 @@ class TimerPanel(QWidget):
             self.time_label.setText(self.format_time())
             time.sleep(1)
             if self.seconds <= 0:
+                # Create a semaphore so only one thread can alarm at a time
                 sem = threading.Semaphore()
                 sem.acquire()
                 self.finished = True

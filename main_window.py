@@ -29,9 +29,9 @@ class MainWindow(QWidget):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
         self.layout.addWidget(
-            TimerPanel("Relax Eyes", 6, self.middle_panel), 0, 0, 1, 3)  # 900
+            TimerPanel("Relax Eyes", 900, self.middle_panel), 0, 0, 1, 3)
         self.layout.addWidget(
-            TimerPanel("Rest Hands", 6, self.middle_panel), 1, 0)  # 2400
+            TimerPanel("Rest Hands", 2400, self.middle_panel), 1, 0)
 
         self.layout.addWidget(self.middle_panel, 1, 1)
 
