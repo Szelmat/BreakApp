@@ -20,7 +20,6 @@ class MainWindow(QWidget):
     def init_ui(self):
         self.resize(1200, 700)
         self.build_layout()
-        # self.center()
         self.setWindowTitle('BreakApp')
         self.show()
 
@@ -32,20 +31,12 @@ class MainWindow(QWidget):
             TimerPanel("Relax Eyes", 900, self.middle_panel), 0, 0, 1, 3)
         self.layout.addWidget(
             TimerPanel("Rest Hands", 2400, self.middle_panel), 1, 0)
-
-        self.layout.addWidget(self.middle_panel, 1, 1)
-
         self.layout.addWidget(
             TimerPanel("Stand up", 3600, self.middle_panel), 1, 2)
         self.layout.addWidget(
             TimerPanel("Stretch", 7200, self.middle_panel), 2, 0, 1, 3)
 
-    def center(self):
-        '''Center the window'''
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
+        self.layout.addWidget(self.middle_panel, 1, 1)
 
 
 if __name__ == "__main__":
