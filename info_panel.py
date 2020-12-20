@@ -37,10 +37,8 @@ class InfoPanel(QWidget):
         playsound("res/alarm.wav")
         self.change_info(desc)
 
-    def change_info(self, title: str, time: str = ""):
+    def change_info(self, title: str):
         self.title_label.setText(title)
-        if time != "":
-            self.timer_label.setText(time)
 
         self.thread = Thread()
         self.thread._signal.connect(self.signal_accept)
