@@ -1,4 +1,5 @@
 import time
+import threading
 from playsound import playsound
 
 from PyQt5.QtWidgets import (
@@ -8,8 +9,9 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
 )
 from PyQt5 import QtCore
-from PyQt5.QtCore import QThread
 from PyQt5.QtGui import QFont
+
+from timer_panel import TimerPanel
 
 
 class InfoPanel(QWidget):
@@ -32,45 +34,40 @@ class InfoPanel(QWidget):
         self.layout.addWidget(self.timer_label)
         self.layout.addWidget(self.progressbar)
 
+        self.timer_panels = (
+            TimerPanel("Relax Eyes", 5),  # 900
+            TimerPanel("Rest Hands", 2400),
+            TimerPanel("Stand up", 3600),
+            TimerPanel("Stretch", 7200),
+        )
+
+        alarm_checker_thread = threading.Thread(target=self.check_alarms, daemon=True)
+        alarm_checker_thread.start()
+
+    def check_alarms(self):
+        while(True):
+            for timer_panel in self.timer_panels:
+                if timer_panel.finished:
+                    self.alarm("test")
+                    timer_panel.reset()
+            time.sleep(0.1)
+
     def alarm(self, desc: str) -> bool:
         '''Play the alarm sound and display the prompt'''
         self.title_label.setText(desc)
         playsound("res/alarm.wav")
         self.change_info(desc)
+        pb_thread = threading.Thread(target=self.timeout, daemon=True)
+        pb_thread.start()
+        pb_thread.join()
+        self.change_info('')
 
-    def change_info(self, title: str):
-        '''Show the current action on the middle panel'''
-        self.title_label.setText(title)
-        self.thread = Thread()
-        self.thread._signal.connect(self.signal_accept)
-        self.thread.start()
+    def change_info(self, desc: str):
+        self.title_label.setText(desc)
 
-    def signal_accept(self, msg):
-        '''Get the current value of the progressbar and display it'''
-        self.progressbar.setValue(int(msg))
-        if self.progressbar.value() == 99:
-            self.progressbar.setValue(0)
-            self.title_label.setText("")
-
-
-class Thread(QThread):
-    _signal = QtCore.pyqtSignal(int)
-
-    def __init__(self):
-        super(Thread, self).__init__()
-
-    def __del__(self):
-        self.wait()
-
-    def run(self):
-        '''Wait and send the current progress of the timeout'''
-        seconds = 0.0
-        STEP = 0.2
-        while(True):
-            val = (seconds / 4.0) * 100
-            self._signal.emit(val)
-            if(val >= 99):
-                self._signal.emit(99)
-                return
+    def timeout(self):
+        i = 0.1
+        while(i < 5):
+            self.progressbar.setValue(i / 5 * 100)
             time.sleep(0.1)
-            seconds += STEP
+            i += 0.1

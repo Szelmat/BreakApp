@@ -10,11 +10,9 @@ from PyQt5.QtWidgets import (
     QLabel,
 )
 
-from info_panel import InfoPanel
-
 
 class TimerPanel(QWidget):
-    def __init__(self, name: str, seconds: int, middle_panel: InfoPanel):
+    def __init__(self, name: str, seconds: int):
         super().__init__()
         self.name = name
         self.seconds_original = self.seconds = seconds
@@ -23,8 +21,8 @@ class TimerPanel(QWidget):
             target=self.countdown,
             daemon=True
         )
+        self.finished = False
         self.countdown_thread.start()
-        self.middle_panel = middle_panel
 
     def build_widget(self):
         '''Lay out the visual elements of the widget'''
@@ -35,9 +33,9 @@ class TimerPanel(QWidget):
         self.layout.addWidget(self.title_label)
         self.layout.addWidget(self.time_label)
 
-    def get_title_label(self, title: str) -> QLabel:
-        '''Construct the title label'''
-        label = QLabel(f"{title}")
+    def get_title_label(self, text: str) -> QLabel:
+        '''Construct the text label'''
+        label = QLabel(f"{text.title()}")
         label.setFont(QFont('Segoe UI', 13))
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
@@ -71,18 +69,17 @@ class TimerPanel(QWidget):
         hours_minutes_seconds.append(self.seconds % 60)
         return hours_minutes_seconds
 
+    def reset(self):
+        '''Reset the timer (used after alarm)'''
+        self.finished = False
+        self.seconds = self.seconds_original
+        self.countdown
+
     def countdown(self):
         '''Construct and start the countdown loop'''
-        self.finished = False
         while(True):
             self.seconds -= 1
             self.time_label.setText(self.format_time())
             time.sleep(1)
             if self.seconds <= 0:
-                # Create a semaphore so only one thread can alarm at a time
-                sem = threading.Semaphore()
-                sem.acquire()
                 self.finished = True
-                self.middle_panel.alarm(self.name)
-                self.seconds = self.seconds_original
-                sem.release()
