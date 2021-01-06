@@ -14,14 +14,6 @@ class TimerPanel(wx.Panel):
         self.build_widget()
         self.start_countdown()
 
-    def start_countdown(self):
-        '''Construct a new countdown loop and start it'''
-        self.reset()
-        self.countdown_thread = threading.Thread(
-            target=self.countdown, daemon=True)
-        self.finished = False
-        self.countdown_thread.start()
-
     def reset(self):
         '''Reset the timer (used after alarm)'''
         self.finished = False
@@ -68,6 +60,14 @@ class TimerPanel(wx.Panel):
         )
         hours_minutes_seconds.append(self.seconds % 60)
         return hours_minutes_seconds
+
+    def start_countdown(self):
+        '''Construct a new countdown loop and start it'''
+        self.reset()
+        self.countdown_thread = threading.Thread(
+            target=self.countdown, daemon=True)
+        self.finished = False
+        self.countdown_thread.start()
 
     def countdown(self):
         '''Construct and start the countdown loop'''

@@ -10,19 +10,11 @@ class InfoPanel(wx.Panel):
         super().__init__(parent)
         self.layout = wx.GridSizer(1)
 
-        # font = wx.Font(13, wx.FONTFAMILY_DEFAULT,
-        #    wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_LIGHT)
-
         self.layout.Add(wx.StaticText(
             self, label="Current Activity:"), wx.ID_ANY, wx.ALIGN_CENTER)
 
         self.title_label = wx.StaticText(self, label="")
-        # self.title_label.SetFont(font)
         self.layout.Add(self.title_label, wx.ID_ANY, wx.ALIGN_CENTER)
-
-        self.timer_label = wx.StaticText(self, label="")
-        # self.timer_label.SetFont(font)
-        self.layout.Add(self.timer_label, wx.ID_ANY, wx.ALIGN_CENTER)
 
         self.progressbar = wx.Gauge(self, size=wx.Size(400, 16))
         self.layout.Add(self.progressbar, wx.ID_ANY, wx.ALIGN_CENTER)
