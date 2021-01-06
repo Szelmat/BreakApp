@@ -24,7 +24,7 @@ class InfoPanel(wx.Panel):
         # self.timer_label.SetFont(font)
         self.layout.Add(self.timer_label, wx.ID_ANY, wx.ALIGN_CENTER)
 
-        self.progressbar = wx.Gauge(self, size=wx.Size(500, 16))
+        self.progressbar = wx.Gauge(self, size=wx.Size(400, 16))
         self.layout.Add(self.progressbar, wx.ID_ANY, wx.ALIGN_CENTER)
 
         self.SetSizer(self.layout)
