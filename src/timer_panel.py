@@ -75,6 +75,7 @@ class TimerPanel(wx.Panel):
         while(True):
             self.seconds -= 1
             self.time_label.SetLabel(self.format_time())
+            self.Layout()
             time.sleep(1)
             if self.seconds <= 0:
                 self.finished = True
