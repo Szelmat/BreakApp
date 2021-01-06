@@ -4,15 +4,13 @@ import threading
 import wx
 from playsound import playsound
 
-from timer_panel import TimerPanel
-
 
 class InfoPanel(wx.Panel):
     def __init__(self, parent):
         super().__init__(parent)
         self.layout = wx.GridSizer(1)
 
-        #font = wx.Font(13, wx.FONTFAMILY_DEFAULT,
+        # font = wx.Font(13, wx.FONTFAMILY_DEFAULT,
         #    wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_LIGHT)
 
         self.title_label = wx.StaticText(self, label="")
@@ -31,7 +29,10 @@ class InfoPanel(wx.Panel):
     def alarm(self, desc: str) -> bool:
         '''Play the alarm sound and display the prompt'''
         self.change_info(desc)
-        playsound("res/sound/alarm.wav")
+        try:
+            playsound("res/sound/alarm.wav")
+        except Exception:
+            playsound("../res/sound/alarm.wav")
         self.change_info(desc)
         pb_thread = threading.Thread(target=self.timeout, daemon=True)
         pb_thread.start()

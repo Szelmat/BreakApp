@@ -6,25 +6,28 @@ import wx
 from info_panel import InfoPanel
 from timer_panel import TimerPanel
 
+
 class ComboPanel(wx.Panel):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
-        self.layout = wx.GridSizer(3)
+        self.layout = wx.GridSizer(1)
         self.SetSizer(self.layout)
+        self.timer_layout = wx.GridSizer(2)
 
         self.info_panel = InfoPanel(self)
         self.layout.Add(self.info_panel, wx.ID_ANY, wx.ALIGN_CENTER)
+        self.layout.Add(self.timer_layout, wx.ID_ANY, wx.EXPAND)
 
         self.timer_panels = (
-            TimerPanel(self, "Relax Eyes", 10),  # 900
-            TimerPanel(self, "Rest Hands", 20),  # 2400
+            TimerPanel(self, "Relax Eyes", 900),
+            TimerPanel(self, "Rest Hands", 2400),
             TimerPanel(self, "Stand Up", 3600),
             TimerPanel(self, "Stretch", 7200)
         )
 
         for panel in self.timer_panels:
-            self.layout.Add(panel, wx.ID_ANY, wx.ALIGN_CENTER)
+            self.timer_layout.Add(panel, wx.ID_ANY, wx.ALIGN_CENTER)
 
         alarm_checker_thread = threading.Thread(
             target=self.check_alarms, daemon=True)

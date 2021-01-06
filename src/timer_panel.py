@@ -4,6 +4,7 @@ import threading
 
 import wx
 
+
 class TimerPanel(wx.Panel):
     def __init__(self, parent, name: str, seconds: int):
         super().__init__(parent)
@@ -17,7 +18,7 @@ class TimerPanel(wx.Panel):
         '''Construct a new countdown loop and start it'''
         self.reset()
         self.countdown_thread = threading.Thread(
-            target = self.countdown, daemon = True)
+            target=self.countdown, daemon=True)
         self.finished = False
         self.countdown_thread.start()
 
@@ -51,7 +52,7 @@ class TimerPanel(wx.Panel):
         hours, mins, secs = self.calculate_time()
         if hours > 0:
             return (f"{str(hours).zfill(2)}:{str(mins).zfill(2)}:"
-                f"{str(secs).zfill(2)}")
+                    f"{str(secs).zfill(2)}")
         else:
             return f"{str(mins).zfill(2)}:{str(secs).zfill(2)}"
 
