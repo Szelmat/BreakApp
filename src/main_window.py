@@ -7,7 +7,7 @@ class MainWindow(wx.Frame):
     def __init__(self, window_title):
         super().__init__(
             None, title=window_title, style=wx.MINIMIZE_BOX | wx.RESIZE_BORDER
-            | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX, size=(800, 500)
+            | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX, size=(700, 400)
         )
         self.Center()
 

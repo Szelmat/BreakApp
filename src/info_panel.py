@@ -13,6 +13,9 @@ class InfoPanel(wx.Panel):
         # font = wx.Font(13, wx.FONTFAMILY_DEFAULT,
         #    wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_LIGHT)
 
+        self.layout.Add(wx.StaticText(
+            self, label="Current Activity:"), wx.ID_ANY, wx.ALIGN_CENTER)
+
         self.title_label = wx.StaticText(self, label="")
         # self.title_label.SetFont(font)
         self.layout.Add(self.title_label, wx.ID_ANY, wx.ALIGN_CENTER)
@@ -21,7 +24,7 @@ class InfoPanel(wx.Panel):
         # self.timer_label.SetFont(font)
         self.layout.Add(self.timer_label, wx.ID_ANY, wx.ALIGN_CENTER)
 
-        self.progressbar = wx.Gauge(self)
+        self.progressbar = wx.Gauge(self, size=wx.Size(500, 16))
         self.layout.Add(self.progressbar, wx.ID_ANY, wx.ALIGN_CENTER)
 
         self.SetSizer(self.layout)
@@ -45,9 +48,10 @@ class InfoPanel(wx.Panel):
         self.layout.Layout()
 
     def timeout(self):
+        seconds_to_wait = 5
         i = 0.1
-        while(i < 3):
-            self.progressbar.SetValue(3 / i * 100)
+        while(i < seconds_to_wait):
+            self.progressbar.SetValue(seconds_to_wait / i * 100)
             time.sleep(0.1)
             i += 0.1
         self.progressbar.SetValue(0)
