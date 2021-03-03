@@ -16,6 +16,11 @@ class InfoPanel(wx.Panel):
         self.title_label = wx.StaticText(self, label="")
         self.layout.Add(self.title_label, wx.ID_ANY, wx.ALIGN_CENTER)
 
+        self.next_button = wx.Button(self, wx.ID_ANY, label="Next")
+        self.layout.Add(self.next_button, wx.ID_ANY, wx.ALIGN_CENTER)
+        self.next_button.Bind(wx.EVT_BUTTON, self.next_button_clicked)
+        self.next_button.Disable()
+
         self.cont = False
 
         self.SetSizer(self.layout)
@@ -31,23 +36,24 @@ class InfoPanel(wx.Panel):
 
         self.cont = False
         pb_thread = threading.Thread(target=self.timeout, daemon=True)
+        self.next_button.Enable()
         pb_thread.start()
         pb_thread.join()
         self.change_info('')
 
     def change_info(self, desc: str):
         '''Change the text over the progressbar and center it'''
-        self.next_button = wx.Button(self, wx.ID_ANY, label="Next")
-        self.layout.Add(self.next_button, wx.ID_ANY, wx.ALIGN_CENTER)
-        self.next_button.Bind(wx.EVT_BUTTON, self.next_button_clicked)
         self.title_label.SetLabel(desc)
         self.layout.Layout()
 
-    def next_button_clicked(self):
+    def next_button_clicked(self, event):
+        btn = event.GetEventObject()
+        btn.Disable()
         self.cont = True
 
     def timeout(self):
         while(True):
             if self.cont:
+                self.next_button.Disable()
                 break
-            time.sleep(1)
+            time.sleep(0.5)
