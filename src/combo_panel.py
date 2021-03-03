@@ -20,7 +20,7 @@ class ComboPanel(wx.Panel):
         self.layout.Add(self.timer_layout, wx.ID_ANY, wx.EXPAND)
 
         self.timer_panels = (
-            TimerPanel(self, "Relax Eyes", 900),
+            TimerPanel(self, "Relax Eyes", 9),
             TimerPanel(self, "Rest Hands", 2400),
             TimerPanel(self, "Stand Up", 3600),
             TimerPanel(self, "Stretch", 7200)

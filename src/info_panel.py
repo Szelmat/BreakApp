@@ -16,8 +16,7 @@ class InfoPanel(wx.Panel):
         self.title_label = wx.StaticText(self, label="")
         self.layout.Add(self.title_label, wx.ID_ANY, wx.ALIGN_CENTER)
 
-        self.progressbar = wx.Gauge(self, size=wx.Size(400, 16))
-        self.layout.Add(self.progressbar, wx.ID_ANY, wx.ALIGN_CENTER)
+        self.cont = False
 
         self.SetSizer(self.layout)
 
@@ -29,6 +28,8 @@ class InfoPanel(wx.Panel):
         except Exception:
             playsound("../res/sound/alarm.wav")
         self.change_info(desc)
+
+        self.cont = False
         pb_thread = threading.Thread(target=self.timeout, daemon=True)
         pb_thread.start()
         pb_thread.join()
@@ -36,14 +37,17 @@ class InfoPanel(wx.Panel):
 
     def change_info(self, desc: str):
         '''Change the text over the progressbar and center it'''
+        self.next_button = wx.Button(self, wx.ID_ANY, label="Next")
+        self.layout.Add(self.next_button, wx.ID_ANY, wx.ALIGN_CENTER)
+        self.next_button.Bind(wx.EVT_BUTTON, self.next_button_clicked)
         self.title_label.SetLabel(desc)
         self.layout.Layout()
 
+    def next_button_clicked(self):
+        self.cont = True
+
     def timeout(self):
-        seconds_to_wait = 5
-        i = 0.1
-        while(i < seconds_to_wait):
-            self.progressbar.SetValue(seconds_to_wait / i * 100)
-            time.sleep(0.1)
-            i += 0.1
-        self.progressbar.SetValue(0)
+        while(True):
+            if self.cont:
+                break
+            time.sleep(1)
