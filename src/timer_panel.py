@@ -45,8 +45,7 @@ class TimerPanel(wx.Panel):
         if hours > 0:
             return (f"{str(hours).zfill(2)}:{str(mins).zfill(2)}:"
                     f"{str(secs).zfill(2)}")
-        else:
-            return f"{str(mins).zfill(2)}:{str(secs).zfill(2)}"
+        return f"{str(mins).zfill(2)}:{str(secs).zfill(2)}"
 
     def calculate_time(self) -> list:
         '''Calculate the hours, minutes, seconds remaining'''
