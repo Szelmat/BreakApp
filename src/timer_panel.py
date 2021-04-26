@@ -1,6 +1,6 @@
 import math
-import time
 import threading
+import time
 
 import wx
 
